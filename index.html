@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="description" content="T.I - Seu assistente virtual inteligente com reconhecimento de voz e síntese de voz em português">
+    <meta name="keywords" content="assistente virtual, IA, voz, reconhecimento de voz, português">
+    <meta name="author" content="T.I Assistant">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234f46e5' width='100' height='100' rx='20'/><text x='50' y='75' font-size='60' fill='white' text-anchor='middle' font-weight='bold'>TI</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%234f46e5' width='192' height='192' rx='45'/><text x='96' y='130' font-size='120' fill='white' text-anchor='middle' font-weight='bold'>T.I</text></svg>">
+    <title>T.I - Seu Assistente Virtual</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Tema Toggle -->
+        <button class="theme-toggle" id="themeToggle" title="Alternar tema">
+            <span class="theme-icon">🌙</span>
+        </button>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">T.I</div>
+                <h1 class="title">Seu Assistente Virtual</h1>
+            </div>
+            <p class="subtitle">Clique no microfone ou diga "Olá T.I"</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Voice Equalizer -->
+            <div class="voice-visualizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+
+            <!-- Microphone Button -->
+            <div class="mic-container">
+                <button class="mic-button" id="micButton" title="Pressione para falar">
+                    <span class="mic-icon">🎤</span>
+                </button>
+                <div class="mic-status" id="micStatus">Clique para falar</div>
+            </div>
+
+            <!-- Command Display -->
+            <div class="command-display">
+                <div class="user-input">
+                    <span class="user-label">Você:</span>
+                    <span class="user-text" id="userInput">-</span>
+                </div>
+                <div class="ai-response">
+                    <span class="ai-label">T.I:</span>
+                    <span class="ai-text" id="aiResponse">Olá! Sou T.I, seu assistente virtual. Como posso ajudar?</span>
+                </div>
+            </div>
+
+            <!-- Quick Commands -->
+            <div class="quick-commands">
+                <h3>Comandos Rápidos</h3>
+                <div class="commands-grid">
+                    <button class="command-btn" data-command="Que horas são">⏰ Horas</button>
+                    <button class="command-btn" data-command="Qual é a data">📅 Data</button>
+                    <button class="command-btn" data-command="Diga uma piada">😄 Piada</button>
+                    <button class="command-btn" data-command="Qual é a previsão do tempo">🌤️ Clima</button>
+                    <button class="command-btn" data-command="Me calc 10 + 5">🧮 Calculadora</button>
+                    <button class="command-btn" data-command="Abra o Google">🔍 Google</button>
+                    <button class="command-btn" data-command="O que é Python">🧠 Buscar</button>
+                    <button class="command-btn" data-command="Temperatura em São Paulo">🌡️ Clima</button>
+                </div>
+            </div>
+
+            <!-- Chat History -->
+            <div class="chat-history">
+                <h3>Histórico</h3>
+                <div class="history-list" id="historyList">
+                    <div class="history-item">
+                        <span class="history-time">00:00</span>
+                        <span class="history-text">Assistente iniciado</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Buttons -->
+        <div class="fab-container">
+            <button class="fab" id="paidBtn" title="Ativar Versão Paga (ChatGPT)">💎</button>
+            <button class="fab" id="settingsBtn" title="Configurações">⚙️</button>
+            <button class="fab" id="helpBtn" title="Ajuda">❓</button>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Configurações</h2>
+                    <button class="close-btn" id="closeSettings">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-item">
+                        <label>Volume de Saída:</label>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                        <span id="volumeValue">70%</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>Velocidade de Fala:</label>
+                        <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
+                        <span id="speedValue">Normal</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="autoStartCheckbox" checked>
+                            Iniciar automaticamente
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="soundEffectsCheckbox" checked>
+                            Sons de Efeito
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" id="clearHistoryBtn">Limpar Histórico</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paid Version Modal -->
+        <div class="modal" id="paidModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>💎 Versão Paga - ChatGPT</h2>
+                    <button class="close-btn" id="closePaid">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="paid-info">
+                        <p><strong>Ative a IA inteligente ChatGPT para responder qualquer pergunta!</strong></p>
+                        <div class="features-list">
+                            <div class="feature-item">✨ Responda qualquer pergunta</div>
+                            <div class="feature-item">🧠 IA inteligente e precisa</div>
+                            <div class="feature-item">💬 Conversa contínua com contexto</div>
+                            <div class="feature-item">🗣️ Fala em português perfeito</div>
+                            <div class="feature-item">⚡ Respostas rápidas e precisas</div>
+                        </div>
+                    </div>
+
+                    <div class="api-setup">
+                        <h3>Como Ativar?</h3>
+                        <ol>
+                            <li>Acesse: <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI API Keys</a></li>
+                            <li>Faça login com sua conta OpenAI</li>
+                            <li>Clique em "Create new secret key"</li>
+                            <li>Copie a chave gerada (começa com sk-)</li>
+                            <li>Cole aqui abaixo</li>
+                        </ol>
+                    </div>
+
+                    <div class="setting-item">
+                        <label>Sua Chave OpenAI (sk-...)</label>
+                        <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui" maxlength="200">
+                        <small>Sua chave é armazenada apenas localmente no seu navegador</small>
+                    </div>
+
+                    <div class="setting-item">
+                        <label>Modelo de IA:</label>
+                        <select id="modelSelect">
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Rápido e Barato) - Recomendado</option>
+                            <option value="gpt-4">GPT-4 (Mais Inteligente mas Lento)</option>
+                            <option value="gpt-4-turbo-preview">GPT-4 Turbo (Melhor Balanço)</option>
+                        </select>
+                    </div>
+
+                    <div class="pricing-info">
+                        <h4>💰 Custos (muito baixos!):</h4>
+                        <ul>
+                            <li><strong>gpt-3.5-turbo:</strong> ~$0,0005 por 1000 tokens</li>
+                            <li><strong>gpt-4:</strong> ~$0,03 por 1000 tokens</li>
+                            <li><strong>Uma conversa:</strong> ~100-200 tokens = menos de 1 centavo!</li>
+                        </ul>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="savePaidBtn">✅ Ativar ChatGPT</button>
+                        <button class="btn btn-secondary" id="removePaidBtn">❌ Desativar</button>
+                    </div>
+
+                    <div id="paidStatus" class="paid-status" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div class="modal" id="helpModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Como Usar T.I</h2>
+                    <button class="close-btn" id="closeHelp">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h3>Comandos Disponíveis:</h3>
+                    <ul>
+                        <li>⏰ "Que horas são?" - Mostra a hora atual</li>
+                        <li>📅 "Qual é a data?" - Mostra a data atual</li>
+                        <li>😄 "Diga uma piada" - Conta piadas</li>
+                        <li>🧮 "Me calcule X + Y" - Realiza cálculos</li>
+                        <li>🔍 "Google" - Abre o Google</li>
+                        <li>🌤️ "Clima em [cidade]" - Informações sobre o clima</li>
+                        <li>🧠 "O que é [coisa]?" - Busca na internet (Wikipedia)</li>
+                        <li>📚 Faça qualquer pergunta com "?" - Busca automática!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay for Modal -->
+        <div class="modal-overlay" id="modalOverlay"></div>
+    </div>
+
+    <script src="commands.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
